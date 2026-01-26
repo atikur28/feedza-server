@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "rootDir": "./src",
+    // "rootDir": "./src",
     "outDir": "./dist",
 
     "module": "ESNext",
@@ -23,5 +23,5 @@
     "esModuleInterop": true
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "src/generated"]
+  "exclude": ["node_modules", "dist", "generated/prisma"]
 }
