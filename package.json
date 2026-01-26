@@ -6,10 +6,18 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/atikur28/feedza-server.git"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "module",
+  "bugs": {
+    "url": "https://github.com/atikur28/feedza-server/issues"
+  },
+  "homepage": "https://github.com/atikur28/feedza-server#readme",
   "devDependencies": {
     "@types/node": "^25.0.10",
     "@types/pg": "^8.16.0",
@@ -20,7 +28,9 @@
   "dependencies": {
     "@prisma/adapter-pg": "^7.3.0",
     "@prisma/client": "^7.3.0",
+    "cors": "^2.8.6",
     "dotenv": "^17.2.3",
+    "express": "^5.2.1",
     "pg": "^8.17.2"
   }
 }
