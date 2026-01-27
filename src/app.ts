@@ -2,6 +2,9 @@ import { toNodeHandler } from "better-auth/node";
 import cors from "cors";
 import express from "express";
 import { auth } from "./lib/auth";
+import errorHandler from "./middlewares/globalErrorHandler";
+import { notFound } from "./middlewares/notFound";
+import { providerRouter } from "./modules/provider/provider.router";
 
 const app = express();
 
@@ -12,10 +15,18 @@ app.use(
   }),
 );
 
+app.use(express.json());
+
 app.all("/api/auth/*splat", toNodeHandler(auth));
+
+app.use("/api/provider", providerRouter);
 
 app.get("/", (req, res) => {
   res.send("Feedza server is running....");
 });
+
+app.use(notFound);
+
+app.use(errorHandler);
 
 export default app;
