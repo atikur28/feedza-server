@@ -4,6 +4,7 @@ import express from "express";
 import { auth } from "./lib/auth";
 import errorHandler from "./middlewares/globalErrorHandler";
 import { notFound } from "./middlewares/notFound";
+import { mealRouter } from "./modules/meal/meal.router";
 import { providerRouter } from "./modules/provider/provider.router";
 
 const app = express();
@@ -20,6 +21,8 @@ app.use(express.json());
 app.all("/api/auth/*splat", toNodeHandler(auth));
 
 app.use("/api/provider", providerRouter);
+
+app.use("/api/meals", mealRouter);
 
 app.get("/", (req, res) => {
   res.send("Feedza server is running....");
