@@ -14,11 +14,7 @@ router.post(
   categoryController.createCategory,
 );
 
-router.put(
-  "/:id",
-  auth(UserRole.ADMIN, UserRole.PROVIDER),
-  categoryController.updateCategory,
-);
+router.put("/:id", auth(UserRole.ADMIN), categoryController.updateCategory);
 
 router.delete("/:id", auth(UserRole.ADMIN), categoryController.deleteCategory);
 
