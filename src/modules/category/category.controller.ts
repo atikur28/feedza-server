@@ -1,107 +1,125 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import { categoryService } from "./category.service";
 
-const getAllCategories = async (
-  _req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
+const getAllCategories = async (req: Request, res: Response) => {
   try {
     const categories = await categoryService.getAllCategories();
-
-    res.json({
+    return res.json({
       success: true,
-      message: "Categories retrieved successfully!",
       data: categories,
+      error: null,
+      message: "Categories retrieved successfully!",
     });
   } catch (err: any) {
-    next(err);
+    return res.status(500).json({
+      success: false,
+      data: null,
+      error: err.message || "Something went wrong",
+    });
   }
 };
 
-const getCategoryById = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
+const getCategoryById = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-
     if (!id) {
       return res.status(400).json({
         success: false,
-        message: "Category id is required!",
+        data: null,
+        error: "Category ID is required!",
       });
     }
 
     const category = await categoryService.getCategoryById(id as string);
-    res.json({
+    return res.json({
       success: true,
-      message: "Category retrieved successfully!",
       data: category,
+      error: null,
+      message: "Category retrieved successfully!",
     });
   } catch (err: any) {
-    next(err);
+    return res.status(500).json({
+      success: false,
+      data: null,
+      error: err.message || "Something went wrong",
+    });
   }
 };
 
-const createCategory = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
+const createCategory = async (req: Request, res: Response) => {
   try {
     const category = await categoryService.createCategory(req.body);
-
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
-      message: "Category created successfully!",
       data: category,
+      error: null,
+      message: "Category created successfully!",
     });
   } catch (err: any) {
-    next(err);
+    return res.status(500).json({
+      success: false,
+      data: null,
+      error: err.message || "Something went wrong",
+    });
   }
 };
 
-const updateCategory = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
+const updateCategory = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { name, slug } = req.body;
+
+    if (!id || !name || !slug) {
+      return res.status(400).json({
+        success: false,
+        data: null,
+        error: "Category ID, name and slug are required!",
+      });
+    }
 
     const category = await categoryService.updateCategory(id as string, {
       name,
       slug,
     });
-
-    res.json({
+    return res.json({
       success: true,
-      message: "Category updated successfully!",
       data: category,
+      error: null,
+      message: "Category updated successfully!",
     });
   } catch (err: any) {
-    next(err);
+    return res.status(500).json({
+      success: false,
+      data: null,
+      error: err.message || "Something went wrong",
+    });
   }
 };
 
-const deleteCategory = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
+const deleteCategory = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
+    if (!id) {
+      return res.status(400).json({
+        success: false,
+        data: null,
+        error: "Category ID is required!",
+      });
+    }
 
     await categoryService.deleteCategory(id as string);
-    res.json({
+    return res.json({
       success: true,
-      message: "Category deleted successfully",
+      data: null,
+      error: null,
+      message: "Category deleted successfully!",
     });
   } catch (err: any) {
-    next(err);
+    return res.status(500).json({
+      success: false,
+      data: null,
+      error: err.message || "Something went wrong",
+    });
   }
 };
 
