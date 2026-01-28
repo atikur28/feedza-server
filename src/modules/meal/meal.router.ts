@@ -12,6 +12,10 @@ router.post("/", auth(UserRole.PROVIDER), mealController.createMeal);
 
 router.put("/:id", auth(UserRole.PROVIDER), mealController.updateMeal);
 
-router.delete("/:id", auth(UserRole.PROVIDER), mealController.deleteMeal);
+router.delete(
+  "/:id",
+  auth(UserRole.PROVIDER, UserRole.ADMIN),
+  mealController.deleteMeal,
+);
 
 export const mealRouter = router;

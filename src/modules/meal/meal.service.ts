@@ -1,5 +1,6 @@
 import { prisma } from "../../lib/prisma";
 
+// Create a meal for a provider
 const createMeal = async (payload: any, userId: string) => {
   const provider = await prisma.providerProfile.findUnique({
     where: { userId },
@@ -10,23 +11,38 @@ const createMeal = async (payload: any, userId: string) => {
     data: {
       ...payload,
       providerId: provider.id,
+      userId,
     },
   });
 };
 
-const getAllMeals = async (query: any) => {
+// Get all meals, optionally filtered by provider (userId)
+const getAllMeals = async (userId?: string) => {
+  const whereClause = userId ? { userId } : {};
+
   return prisma.meal.findMany({
-    include: { provider: true, category: true },
+    where: whereClause,
+    include: {
+      provider: true,
+      category: true,
+      reviews: true,
+    },
   });
 };
 
+// Get single meal by ID
 const getMealById = async (id: string) => {
   return prisma.meal.findUnique({
     where: { id },
-    include: { provider: true, reviews: true },
+    include: {
+      provider: true,
+      category: true,
+      reviews: true,
+    },
   });
 };
 
+// Update meal (only by the provider who owns it)
 const updateMeal = async (id: string, payload: any, userId: string) => {
   const provider = await prisma.providerProfile.findUnique({
     where: { userId },
@@ -46,6 +62,7 @@ const updateMeal = async (id: string, payload: any, userId: string) => {
   });
 };
 
+// Delete meal (only by the provider who owns it)
 const deleteMeal = async (id: string, userId: string) => {
   const provider = await prisma.providerProfile.findUnique({
     where: { userId },
