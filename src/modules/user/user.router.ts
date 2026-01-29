@@ -6,9 +6,13 @@ const router = express.Router();
 
 router.get("/", userController.getAllUsers);
 
-router.get("/:id", auth(UserRole.ADMIN), userController.getUserById);
+router.get("/:id", userController.getUserById);
 
-router.patch("/:id", auth(UserRole.ADMIN), userController.updateUser);
+router.patch(
+  "/:id",
+  auth(UserRole.ADMIN, UserRole.PROVIDER, UserRole.CUSTOMER),
+  userController.updateUser,
+);
 
 router.delete("/:id", auth(UserRole.ADMIN), userController.deleteUser);
 

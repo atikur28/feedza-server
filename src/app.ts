@@ -4,6 +4,7 @@ import express from "express";
 import { auth } from "./lib/auth";
 import errorHandler from "./middlewares/globalErrorHandler";
 import { notFound } from "./middlewares/notFound";
+import { cartRouter } from "./modules/cart/cart.router";
 import { categoryRouter } from "./modules/category/category.router";
 import { mealRouter } from "./modules/meal/meal.router";
 import { orderRouter } from "./modules/order/order.router";
@@ -31,6 +32,8 @@ app.use("/api/providers", providerRouter);
 app.use("/api/categories", categoryRouter);
 
 app.use("/api/meals", mealRouter);
+
+app.use("/api/carts", cartRouter);
 
 app.use("/api/orders", orderRouter);
 
