@@ -20,7 +20,7 @@ router.get(
 
 router.patch(
   "/:id/status",
-  auth(UserRole.PROVIDER, UserRole.ADMIN),
+  auth(UserRole.PROVIDER),
   orderController.updateOrderStatus,
 );
 

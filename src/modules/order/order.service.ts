@@ -24,11 +24,22 @@ const createOrder = async (payload: any, userId: string) => {
 const getAllOrders = async (user: any) => {
   const where: any = {};
   if (user.role === "CUSTOMER") where.customerId = user.id;
-  if (user.role === "PROVIDER") where.providerId = user.providerId;
+
+  if (user.role === "PROVIDER") {
+    const providerProfile = await prisma.providerProfile.findUnique({
+      where: { userId: user.id },
+    });
+
+    if (providerProfile) where.providerId = providerProfile.id;
+  }
 
   return prisma.order.findMany({
     where,
-    include: { items: { include: { meal: true } } },
+    include: {
+      items: { include: { meal: true } },
+      provider: true,
+    },
+    orderBy: { createdAt: "desc" },
   });
 };
 
@@ -39,10 +50,15 @@ const getOrderById = async (id: string, user: any) => {
   });
   if (!order) return null;
 
-  if (user.role === "CUSTOMER" && order.customerId !== user.id)
-    throw new Error("Not authorized");
-  if (user.role === "PROVIDER" && order.providerId !== user.providerId)
-    throw new Error("Not authorized");
+  if (user.role === "PROVIDER") {
+    const providerProfile = await prisma.providerProfile.findUnique({
+      where: { userId: user.id },
+    });
+
+    if (!providerProfile || order.providerId !== providerProfile.id) {
+      throw new Error("Not authorized");
+    }
+  }
 
   return order;
 };
@@ -55,8 +71,15 @@ const updateOrderStatus = async (
   const order = await prisma.order.findUnique({ where: { id } });
   if (!order) throw new Error("Order not found");
 
-  if (user.role === "PROVIDER" && order.providerId !== user.providerId)
-    throw new Error("Not authorized");
+  if (user.role === "PROVIDER") {
+    const providerProfile = await prisma.providerProfile.findUnique({
+      where: { userId: user.id },
+    });
+
+    if (!providerProfile || order.providerId !== providerProfile.id) {
+      throw new Error("Not authorized");
+    }
+  }
 
   return prisma.order.update({
     where: { id },
