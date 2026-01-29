@@ -6,6 +6,7 @@ import errorHandler from "./middlewares/globalErrorHandler";
 import { notFound } from "./middlewares/notFound";
 import { categoryRouter } from "./modules/category/category.router";
 import { mealRouter } from "./modules/meal/meal.router";
+import { orderRouter } from "./modules/order/order.router";
 import { providerRouter } from "./modules/provider/provider.router";
 import { userRouter } from "./modules/user/user.router";
 
@@ -29,6 +30,8 @@ app.use("/api/providers", providerRouter);
 app.use("/api/categories", categoryRouter);
 
 app.use("/api/meals", mealRouter);
+
+app.use("/api/orders", orderRouter);
 
 app.get("/", (req, res) => {
   res.send("Feedza server is running....");
