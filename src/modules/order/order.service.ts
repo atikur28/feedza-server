@@ -1,5 +1,14 @@
-import { OrderStatus } from "../../../generated/prisma/enums";
 import { prisma } from "../../lib/prisma";
+
+export const OrderStatus = {
+  PLACED: "PLACED",
+  PREPARING: "PREPARING",
+  READY: "READY",
+  DELIVERED: "DELIVERED",
+  CANCELLED: "CANCELLED",
+} as const;
+
+export type OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus];
 
 const createOrder = async (payload: any, userId: string) => {
   const provider = await prisma.providerProfile.findUnique({

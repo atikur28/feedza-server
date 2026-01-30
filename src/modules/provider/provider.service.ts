@@ -4,6 +4,7 @@ const getAllProviders = async () => {
   return prisma.providerProfile.findMany({
     include: {
       meals: true,
+      orders: true,
     },
   });
 };
