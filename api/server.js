@@ -1919,7 +1919,7 @@ var userRouter = router7;
 var app = express8();
 app.use(
   cors({
-    origin: process.env.APP_URL || "http://localhost:3000",
+    origin: process.env.APP_URL || "https://feedza.vercel.app",
     credentials: true
   })
 );
