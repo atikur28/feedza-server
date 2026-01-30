@@ -12,10 +12,6 @@ router.get("/:id", reviewController.getReviewById);
 
 router.put("/:id", auth(UserRole.CUSTOMER), reviewController.updateReview);
 
-router.delete(
-  "/:id",
-  auth(UserRole.CUSTOMER, UserRole.ADMIN),
-  reviewController.deleteReview,
-);
+router.delete("/:id", auth(UserRole.ADMIN), reviewController.deleteReview);
 
 export const reviewRouter = router;

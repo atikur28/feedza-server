@@ -30,10 +30,11 @@ const updateReview = async (id: string, payload: any, userId: string) => {
   });
 };
 
-const deleteReview = async (id: string, userId: string) => {
+const deleteReview = async (id: string, userId: string, isAdmin: boolean) => {
   const review = await prisma.review.findUnique({ where: { id } });
   if (!review) throw new Error("Review not found");
-  if (review.userId !== userId) throw new Error("Not authorized");
+
+  if (!isAdmin && review.userId !== userId) throw new Error("Not authorized");
 
   return prisma.review.delete({ where: { id } });
 };

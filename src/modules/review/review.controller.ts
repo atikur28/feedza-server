@@ -126,7 +126,14 @@ const deleteReview = async (req: Request, res: Response) => {
       });
 
     const { id } = req.params;
-    await reviewService.deleteReview(id as string, req.user.id);
+
+    // Pass isAdmin flag
+    await reviewService.deleteReview(
+      id as string,
+      req.user.id,
+      req.user.role === "ADMIN",
+    );
+
     res.status(200).json({
       success: true,
       message: "Review deleted successfully",
